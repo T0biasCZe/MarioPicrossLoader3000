@@ -12,7 +12,7 @@ namespace MarioPicrossLoader3000 {
 		const int LevelsEndOffset = 0xa2b0;
 		public static List<Level> levels = new List<Level>();
 		static void Main(string[] args) {
-			string romPath = @"VASERIPNUTAROMKA.gb";
+			string romPath = @"C:\Users\user\Downloads\Mario's Picross (UE) [S][!].gb";
 
 			byte[] romData = File.ReadAllBytes(romPath);
 
@@ -61,7 +61,17 @@ namespace MarioPicrossLoader3000 {
 				}
 			}
 			stringBuilder.Append("</body></html>");
-			File.WriteAllText("levels_partial.html", stringBuilder.ToString());	
+			File.WriteAllText("levels_partial.html", stringBuilder.ToString());
+
+			StringBuilder htmlEmpty = new StringBuilder(htmlTemplate.ToString());
+
+			for(int i = 0; i < levels.Count; i++) {
+				htmlEmpty.Append($"<h1>Level {i + 1}</h1>");
+				htmlEmpty.Append(levels[i].GenerateHtmlTable());
+			}
+
+			htmlEmpty.Append("</body></html>");
+			File.WriteAllText("levels_empty.html", htmlEmpty.ToString());
 		}
 
 		static Level DecodeLevel(byte[] romData, int offset) {
